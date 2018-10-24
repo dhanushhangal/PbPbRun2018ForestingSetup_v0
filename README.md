@@ -4,47 +4,39 @@ First iteration setup.
 
 ## Setup environment:
 ```bash
-cmsrel CMSSW_8_0_23
-cd CMSSW_8_0_23/src
+cmsrel CMSSW_10_3_0
+cd CMSSW_10_3_0/src
 cmsenv
 # Main forest
-git cms-merge-topic -u CmsHI:forest_CMSSW_8_0_22
-# Dfinder
-git clone -b test80forpPb https://github.com/taweiXcms/Bfinder.git
+git cms-merge-topic -u CmsHI:forest_CMSSW_10_3_0
 git clone git@github.com:kurtejung/production.git
 scram build -j8
 
 # grab submit scripts
-cp production/pARun2016ForestingSetup_v0/* .
+cp PbPbRun2018ForestingSetup_v0/* .
 ```
 
 ## Run interactively:
 ```bash
-cmsRun runForestAOD_pPb_DATA_80X.py outputFile=HiForest_test.root maxEvents=2 inputFiles=root://eoscms//eos/cms/store/express/PARun2016A/ExpressPhysicsPA/FEVT/Express-v1/000/284/755/00000/08BA510B-D6A4-E611-84C9-02163E0141DE.root
+cmsRun runForestAOD_PbPb_DATA_<>X.py outputFile=HiForest_test.root maxEvents=2 inputFiles=root://eoscms//eos/cms/store/express/PARun2016A/ExpressPhysicsPA/FEVT/Express-v1/000/284/755/00000/08BA510B-D6A4-E611-84C9-02163E0141DE.root
 ```
 
 ## Submit one streamer run to caf queue
 
-This needs a fresh checkout of CMSSW_8_0_23 independent of the forest - there are conflicts in the reco script if you use the same CMSSW_BASE as the forest.  Instead do, from a clean area:
-```bash
-cmsrel CMSSW_8_0_23
-```
-then change the path of L56 in submitForestStreamer.py to correspond with the path of the new checked out 8_0_23 release.  
-!! MAKE SURE you cmsenv in your FOREST release though - NOT the new fresh release or else the scripts will not work!
-Once this is setup, and your streamer RECO script has been created (see bottom of this README), you can forest streamers on the batch farm:
+Once the RECO script has been created (see bottom of this README), you can forest streamers on the batch farm:
 ```bash
 ## NOTE - The streamers need to be RECOed also - see instructions at the bottom of this README to get the reco cfg...
-python submitForestStreamer.py -q cmscaf1nd -o /store/group/phys_heavyions/kjung/StreamerForests/v1 -i ExpressPA.284755.v1.txt
+python submitForestStreamer.py -q cmscaf1nd -o /store/group/phys_heavyions/dhangal/StreamerForests/v1 -i ExpressPA.*.v1.txt
 ```
 
 ## Submit one express run to the caf queue
 ```bash
-python submitForestExpress.py -q cmscaf1nd -o /store/group/phys_heavyions/kjung/ExpressForests/v1 -i ExpressForest_284755_v1.txt
+python submitForestExpress.py -q cmscaf1nd -o /store/group/phys_heavyions/dhangal/ExpressForests/v1 -i ExpressForest_*_v1.txt
 ```
 
 ## Submit all runs in 'expressrunstoprocess' to caf queue
 ```bash
-./hit0suballruns.sh 1
+./hit0suballruns_Express.sh 1
 ```
 this will also append the runs in 'expressrunstoprocess' to 'allruns' for bookkeeping
 
@@ -59,11 +51,11 @@ cd CMSSW_8_0_23/src
 cmsenv
 git cms-addpkg Configuration/DataProcessing
 scram build -j8
-git clone git@github.com:kurtejung/production.git
-cp production/pARun2016ForestingSetup_v0/submitRunExpressProcessingCfg.py Configuration/DataProcessing/test/
+git clone git@github.com:dhanushhangal/PbPBRun2018ForestingSetup_v0.git
+cp PbPBRun2018ForestingSetup_v0/submitRunExpressProcessingCfg.py Configuration/DataProcessing/test/
 cd Configuration/DataProcessing/test/
 
-# you can look in run_CfgTest.sh to see different running configuration, I will show how to do Express pPb on DATA
+# you can look in run_CfgTest.sh to see different running configuration, I will show how to do Express PbPb on DATA
 python RunExpressProcessing.py --scenario ppEra_Run2_2016_pA --global-tag 80X_dataRun2_Express_v15 --lfn /some/path/ --fevt
 ```
 This will generate a RunExpressProcessingCfg.py config, make the following changes:
@@ -109,7 +101,7 @@ cmsRun RunExpressProcessingCfg.py outputFile=step3_0.root maxEvents=3 inputFiles
 Now you're ready to submit, to do that:
 ```bash
 # the second time you run this add --proxy=proxyforprod to the following command , also set the outputpath/username
-python submitForestStreamer.py -q cmscaf1nd -o /store/group/phys_heavyions/kjung/StreamerForests/v1 -i ExpressPA.284755.v1.txt --proxy=proxyforprod
+python submitForestStreamer.py -q cmscaf1nd -o /store/group/phys_heavyions/dhangal/StreamerForests/v1 -i ExpressPA.284755.v1.txt --proxy=proxyforprod
 ```
 
-That's it! bjobs to check job status and look in the path for those  /store/group/phys_heavyions/YOURUSERNAME/reco/HIPhysicsMinBiasUPC/v0/
+That's it! bjobs to check job status and look in the path for the forests /store/group/phys_heavyions/YOURUSERNAME
