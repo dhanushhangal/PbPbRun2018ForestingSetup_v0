@@ -1,0 +1,1 @@
+root://eoscms//eos/cms/store/t0streamer/Data/HIPhysicsMinimumBias0/000/325/174/run325174_ls0015_streamHIPhysicsMinimumBias0_StorageManager.dat
