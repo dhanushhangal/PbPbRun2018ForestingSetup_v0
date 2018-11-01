@@ -27,7 +27,7 @@ git clone git@github.com:dhanushhangal/PbPbRun2018ForestingSetup_v0.git
 
 ## Run interactively:
 ```bash
-cmsRun runForestAOD_pponAA_MB_102X.py outputFile=HiForest_test.root maxEvents=3 inputFiles=step3_0.root
+cmsRun runForestAOD_pponAA_MB_102X.py outputFile=HiForest_test.root maxEvents=3 inputFiles=step3_numEvent3.root
 ```
 
 ## Submit one streamer run to lxplus batch
@@ -61,5 +61,5 @@ cmsRun RunExpressProcessingCfg.py outputFile=step3_0.root maxEvents=3 inputFiles
 
 Verfiy that the foresting script works with the output of the above RECO script as the input for this 
 ```bash
-cmsRun runForestAOD_pponAA_MB_102X.py outputFile=HiForest_test.root maxEvents=3 inputFiles=step3_0.root
+cmsRun runForestAOD_pponAA_MB_102X.py outputFile=HiForest_test.root maxEvents=3 inputFiles=step3_numEvent3.root
 ```
