@@ -56,7 +56,7 @@ That's it! bjobs to check job status and look in the path for the forests /store
 
 Verify the RECO script works fine and produces the streamer AOD input
 ```bash
-cmsRun RunExpressProcessingCfg.py outputFile=step3_0.root maxEvents=3 inputFiles=root://eoscms//eos/cms/store/t0streamer/Data/HIPhysicsMinimumBias0/000/325/174/run325174_ls0015_streamHIPhysicsMinimumBias0_StorageManager.dat
+cmsRun CMSSW_10_3_0_patch1_RECO_EXPRESS.py outputFile=step3_0.root maxEvents=3 inputFiles=root://eoscms//eos/cms/store/t0streamer/Data/HIPhysicsMinimumBias0/000/325/174/run325174_ls0015_streamHIPhysicsMinimumBias0_StorageManager.dat
 ```
 
 Verfiy that the foresting script works with the output of the above RECO script as the input for this 
