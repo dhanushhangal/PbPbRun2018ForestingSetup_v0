@@ -8,12 +8,12 @@ import re
 #command line configuration
 usage = 'usage: %prog [options]'
 parser = optparse.OptionParser(usage)
-parser.add_option('-q', '--queue'      ,dest='queue'  ,help='batch queue'          ,default='cmscaf1nd')#cmscaf1nd
+parser.add_option('-q', '--queue'      ,dest='queue'  ,help='batch queue'          ,default='1nd')#cmscaf1nd
 parser.add_option('-j', '--jobs'       ,dest='jobs'   ,help='number of jobs'       ,default=1,    type=int)
 parser.add_option('-i', '--inputF'      ,dest='inputF',help='input file list'     ,default='express.list', type='string')
 parser.add_option('-n', '--nevts'      ,dest='nevts'  ,help='number of evetns/job' ,default=5,  type=int)
 parser.add_option(      '--proxy'      ,dest='proxy'  ,help='proxy to be used'     ,default=None, type='string')
-parser.add_option('-o', '--output'     ,dest='output' ,help='output directory'     ,default='/store/group/phys_heavyions/mverweij/PbPb/Streamer/Forest/')
+parser.add_option('-o', '--output'     ,dest='output' ,help='output directory'     ,default='/store/group/phys_heavyions/dhangal/PbPb_2018_streamer/trial/')
 
 (opt, args) = parser.parse_args()
 
@@ -23,8 +23,8 @@ workBase=os.getcwd()
 jobsBase='%s/FARM%s'%(workBase,time.time())
 os.system('mkdir -p %s'%jobsBase)
 
-recoCfg = "expressRecoCfg_pp2017.py"
-forestCfg = "runForestAOD_pp_DATA_92X.py"
+recoCfg = "CMSSW_10_3_0_patch1_RECO_EXPRESS.py"
+forestCfg = "runForestAOD_pponAA_MB_102X.py"
 
 #init a new proxy if none has been passed
 if opt.proxy is None:
@@ -67,7 +67,7 @@ for line in f:
 #            scriptFile.write('cp $CMSSW_BASE/src/HeavyIonsAnalysis/JetAnalysis/test/*.db .\n')
 	    scriptFile.write('cmsRun %s outputFile=step3_%d.root maxEvents=-1 inputFiles=%s\n' % (recoCfg,jobCounter,line) )
             #scriptFile.write('cd %s/src\n'%cmsswBase)
-            scriptFile.write('cd /afs/cern.ch/user/d/dhangal/CMSSW_9_2_13/src\n')
+            scriptFile.write('cd /afs/cern.ch/user/d/dhangal/CMSSW_10_3_0_patch1/src\n')
             scriptFile.write('eval `scram r -sh`\n')
             scriptFile.write('cd -\n')
 	    scriptFile.write('cmsRun %s outputFile=HiForest_%d.root maxEvents=-1 inputFiles=file:step3_%d.root\n' % (forestCfg,jobCounter,jobCounter) )
@@ -78,7 +78,7 @@ for line in f:
             scriptFile.write('ls\n')
             #scriptFile.write('cmsStage -f step3_%d.root %s/step3_%d.root\n' % (jobCounter,outdir,jobCounter) )
             #scriptFile.write('cmsStage -f HiForest_%d.root %s/HiForest_%d.root\n' % (jobCounter,outdir,jobCounter) )
-            scriptFile.write('eos cp HiForest_%d.root %s/HiForest_%d.root\n' % (jobCounter,outdir3,jobCounter) )
+            scriptFile.write('eos cp HiForest_%d.root root://eoscms//eos/cms%s/HiForest_%d.root\n' % (jobCounter,outdir3,jobCounter) )
             scriptFile.write('rm HiForest_%d*root\n' % (jobCounter))
             scriptFile.write('rm step3_%d.root\n' % (jobCounter))
             scriptFile.close()
