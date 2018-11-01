@@ -25,7 +25,6 @@ cmsRun runForestAOD_PbPb_DATA_<>X.py outputFile=HiForest_test.root maxEvents=2 i
 
 Once the RECO script has been created (see bottom of this README), you can forest streamers on the batch farm:
 ```bash
-## NOTE - The streamers need to be RECOed also - see instructions at the bottom of this README to get the reco cfg...
 python submitForestStreamer.py -q cmscaf1nd -o /store/group/phys_heavyions/dhangal/StreamerForests/v1 -i ExpressPA.*.v1.txt
 ```
 
