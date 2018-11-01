@@ -4,13 +4,13 @@ First iteration setup.
 
 ## Setup environment:
 ```bash
-cmsrel CMSSW_10_3_0
+cmsrel CMSSW_10_3_0_patch1
 cd CMSSW_10_3_0/src
 cmsenv
 # Main forest
-git cms-merge-topic -u CmsHI:forest_CMSSW_10_3_0
-git clone git@github.com:dhanushhangal/PbPBRun2018ForestingSetup_v0.git
-scram build -j8
+git cms-merge-topic -u CmsHI:forest_CMSSW_10_3_0_patch1
+git clone git@github.com:dhanushhangal/PbPbRun2018ForestingSetup_v0.git
+scram build -j4
 
 # grab submit scripts
 cp PbPbRun2018ForestingSetup_v0/* .
