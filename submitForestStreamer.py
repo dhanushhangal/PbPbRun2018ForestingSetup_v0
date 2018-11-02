@@ -23,8 +23,8 @@ workBase=os.getcwd()
 jobsBase='%s/FARM%s'%(workBase,time.time())
 os.system('mkdir -p %s'%jobsBase)
 
-recoCfg = "CMSSW_10_3_0_patch1_RECO_EXPRESS.py"
-forestCfg = "runForestAOD_pponAA_MB_102X.py"
+recoCfg = "CMSSW_10_3_1_RECO_EXPRESS.py"
+forestCfg = "runForestAOD_pponAA_DATA_103X.py"
 
 #init a new proxy if none has been passed
 if opt.proxy is None:
