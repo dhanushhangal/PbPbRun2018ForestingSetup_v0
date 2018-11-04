@@ -22,7 +22,7 @@ cmsswBase=os.environ['CMSSW_BASE']
 workBase=os.getcwd()
 jobsBase='%s/FARM%s'%(workBase,time.time())
 os.system('mkdir -p %s'%jobsBase)
-forestCfg = "runForestAOD_pp_DATA_92X.py"
+forestCfg = "runForestAOD_pponAA_DATA_103X.py"
 
 #init a new proxy if none has been passed
 if opt.proxy is None:
@@ -65,7 +65,7 @@ for line in f:
             scriptFile.write('eos mkdir %s\n' % outdir2)
             scriptFile.write('eos mkdir %s\n' % outdir3) 
             scriptFile.write('ls\n')
-            scriptFile.write('eos cp HiForest_%d.root %s/HiForest_%d.root\n' % (jobCounter,outdir3,jobCounter) )
+            scriptFile.write('eos cp HiForest_%d.root root://eoscms//eos/cms%s/HiForest_%d.root\n' % (jobCounter,outdir3,jobCounter) )
             scriptFile.write('rm HiForest_%d*root\n' % (jobCounter))
             scriptFile.close()
 
