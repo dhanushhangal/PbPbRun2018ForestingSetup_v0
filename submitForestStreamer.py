@@ -13,7 +13,7 @@ parser.add_option('-j', '--jobs'       ,dest='jobs'   ,help='number of jobs'    
 parser.add_option('-i', '--inputF'      ,dest='inputF',help='input file list'     ,default='express.list', type='string')
 parser.add_option('-n', '--nevts'      ,dest='nevts'  ,help='number of evetns/job' ,default=5,  type=int)
 parser.add_option(      '--proxy'      ,dest='proxy'  ,help='proxy to be used'     ,default=None, type='string')
-parser.add_option('-o', '--output'     ,dest='output' ,help='output directory'     ,default='/store/group/phys_heavyions/dhangal/PbPb_2018_streamer/trial/')
+parser.add_option('-o', '--output'     ,dest='output' ,help='output directory'     ,default='/store/group/phys_heavyions/bdiab/PbPb2018/Forests')
 
 (opt, args) = parser.parse_args()
 
