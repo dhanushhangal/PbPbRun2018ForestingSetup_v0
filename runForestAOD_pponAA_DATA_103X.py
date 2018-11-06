@@ -83,8 +83,8 @@ process.centralityBin.centralityVariable = cms.string("HFtowers")
 ###############################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                    #fileName = cms.string("HiForestAOD.root")
-                                    fileName=cms.string(options.outputFile)
+                                  fileName=cms.string(options.outputFile)
+                                  #fileName = cms.string("HiForestAOD.root")
                                   )
 
 ###############################################################################
@@ -206,13 +206,22 @@ process.load('HeavyIonsAnalysis.Configuration.collisionEventSelection_cff')
 process.pclusterCompatibilityFilter = cms.Path(process.clusterCompatibilityFilter)
 process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter)
 process.pBeamScrapingFilter = cms.Path(process.beamScrapingFilter)
+process.collisionEventSelectionAOD = cms.Path(process.collisionEventSelectionAOD)
+process.collisionEventSelectionAODv2 = cms.Path(process.collisionEventSelectionAODv2)
 
 process.load('HeavyIonsAnalysis.Configuration.hfCoincFilter_cff')
-process.phfCoincFilter1 = cms.Path(process.hfCoincFilter)
-process.phfCoincFilter2 = cms.Path(process.hfCoincFilter2)
-process.phfCoincFilter3 = cms.Path(process.hfCoincFilter3)
-process.phfCoincFilter4 = cms.Path(process.hfCoincFilter4)
-process.phfCoincFilter5 = cms.Path(process.hfCoincFilter5)
+process.phfCoincFilter1Th3 = cms.Path(process.hfCoincFilterTh3)
+process.phfCoincFilter2Th3 = cms.Path(process.hfCoincFilter2Th3)
+process.phfCoincFilter3Th3 = cms.Path(process.hfCoincFilter3Th3)
+process.phfCoincFilter4Th3 = cms.Path(process.hfCoincFilter4Th3)
+process.phfCoincFilter5Th3 = cms.Path(process.hfCoincFilter5Th3)
+process.phfCoincFilter1Th4 = cms.Path(process.hfCoincFilterTh4)
+process.phfCoincFilter2Th4 = cms.Path(process.hfCoincFilter2Th4)
+process.phfCoincFilter3Th4 = cms.Path(process.hfCoincFilter3Th4)
+process.phfCoincFilter4Th4 = cms.Path(process.hfCoincFilter4Th4)
+process.phfCoincFilter5Th4 = cms.Path(process.hfCoincFilter5Th4)
+process.phfCoincFilter1Th5 = cms.Path(process.hfCoincFilterTh5)
+process.phfCoincFilter4Th2 = cms.Path(process.hfCoincFilter4Th2)
 
 process.load("HeavyIonsAnalysis.VertexAnalysis.PAPileUpVertexFilter_cff")
 process.pVertexFilterCutG = cms.Path(process.pileupVertexFilterCutG)
