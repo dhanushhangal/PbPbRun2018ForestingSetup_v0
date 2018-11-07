@@ -33,7 +33,7 @@ cmsRun runForestAOD_pponAA_DATA_103X.py outputFile=HiForest_test.root maxEvents=
 
 This script does both jobs of RECO-ing and foresting the raw streamer files:
 ```bash
-python submitForestStreamer.py -q 1nd -o /store/group/phys_heavyions/dhangal/PbPb_2018_streamer/trial -i sample_streamer.txt
+python submitForestStreamer.py -q 1nd -o /store/group/phys_heavyions/dhangal/PbPb_2018_streamer/trial -a /store/group/phys_heavyions/dhangal/PbPb2018_streamerAOD/v0 -i sample_streamer.txt
 ```
 
 ## Submit one express run to the lxplus batch
