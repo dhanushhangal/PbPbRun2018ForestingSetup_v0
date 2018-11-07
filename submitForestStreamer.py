@@ -10,10 +10,11 @@ usage = 'usage: %prog [options]'
 parser = optparse.OptionParser(usage)
 parser.add_option('-q', '--queue'      ,dest='queue'  ,help='batch queue'          ,default='1nd')#cmscaf1nd
 parser.add_option('-j', '--jobs'       ,dest='jobs'   ,help='number of jobs'       ,default=1,    type=int)
-parser.add_option('-i', '--inputF'      ,dest='inputF',help='input file list'     ,default='express.list', type='string')
+parser.add_option('-i', '--inputF'     ,dest='inputF',help='input file list'     ,default='express.list', type='string')
 parser.add_option('-n', '--nevts'      ,dest='nevts'  ,help='number of evetns/job' ,default=5,  type=int)
 parser.add_option(      '--proxy'      ,dest='proxy'  ,help='proxy to be used'     ,default=None, type='string')
 parser.add_option('-o', '--output'     ,dest='output' ,help='output directory'     ,default='/store/group/phys_heavyions/bdiab/PbPb2018/Forests')
+parser.add_option('-a', '--AODoutput'  ,dest='AODoutput' ,help='AOD output directory',default='/store/group/phys_heavyions/dhangal/PbPb2018_streamerAOD/v0')
 
 (opt, args) = parser.parse_args()
 
@@ -52,12 +53,15 @@ for line in f:
             outdir2 = '%s/%s%s%s' % (outdir1,found[0][4],found[0][5],found[0][6])
             outdir3 = '%s/%s%s%s' % (outdir2,found[0][8],found[0][9],found[0][10])            
            
+            outdir4 = '%s/%s%s%s' % (opt.AODoutput,found[0][0],found[0][1],found[0][2])
+            outdir5 = '%s/%s%s%s' % (outdir4,found[0][4],found[0][5],found[0][6])
+            outdir6 = '%s/%s%s%s' % (outdir5,found[0][8],found[0][9],found[0][10])            
+            
             #create bash script to be submitted
             scriptFile = open('%s/runJob_%d.sh'%(jobsBase,jobCounter), 'w')
             scriptFile.write('#!/bin/bash\n')
             scriptFile.write('export X509_USER_PROXY=%s/proxyforprod\n' % workBase)
             scriptFile.write('cd %s/src\n'%cmsswBase)
-            #scriptFile.write('cd /afs/cern.ch/user/k/kjung/AutoForest/CMSSW_8_0_23/src\n')
             scriptFile.write('eval `scram r -sh`\n')
             scriptFile.write('cd -\n')
             scriptFile.write('cp %s/%s %s \n' % (workBase,forestCfg,jobsBase))
@@ -71,13 +75,13 @@ for line in f:
             scriptFile.write('eval `scram r -sh`\n')
             scriptFile.write('cd -\n')
 	    scriptFile.write('cmsRun %s outputFile=HiForest_%d.root maxEvents=-1 inputFiles=file:step3_%d.root\n' % (forestCfg,jobCounter,jobCounter) )
-            #scriptFile.write('cmsMkdir %s\n' % outdir)
             scriptFile.write('eos mkdir %s\n' % outdir1)
             scriptFile.write('eos mkdir %s\n' % outdir2)
             scriptFile.write('eos mkdir %s\n' % outdir3)
             scriptFile.write('ls\n')
-            #scriptFile.write('cmsStage -f step3_%d.root %s/step3_%d.root\n' % (jobCounter,outdir,jobCounter) )
-            #scriptFile.write('cmsStage -f HiForest_%d.root %s/HiForest_%d.root\n' % (jobCounter,outdir,jobCounter) )
+            #use only if you want to save the AOD files
+            scriptFile.write('eos cp step3_%d.root root://eoscms//eos/cms%s/step3_%d.root\n' % (jobCounter,outdir6,jobCounter) )
+            ###########################################
             scriptFile.write('eos cp HiForest_%d.root root://eoscms//eos/cms%s/HiForest_%d.root\n' % (jobCounter,outdir3,jobCounter) )
             scriptFile.write('rm HiForest_%d*root\n' % (jobCounter))
             scriptFile.write('rm step3_%d.root\n' % (jobCounter))
