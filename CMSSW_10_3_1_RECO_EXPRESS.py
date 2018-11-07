@@ -70015,6 +70015,8 @@ process.AODoutput = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string(options.outputFile),
     outputCommands = cms.untracked.vstring( (
         'drop *', 
+        'keep *_siStripClusters_*_*',
+        'keep *_siStripDigis_CommonMode_*',
         'keep ClusterSummary_clusterSummaryProducer_*_*', 
         'keep *_dt4DSegments_*_*', 
         'keep *_dt4DCosmicSegments_*_*', 
@@ -77407,7 +77409,7 @@ process.GlobalTag = cms.ESSource("PoolDBESSource",
     RefreshEachRun = cms.untracked.bool(False),
     RefreshOpenIOVs = cms.untracked.bool(False),
     connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS'),
-    globaltag = cms.string('103X_dataRun2_Express_v1'),
+    globaltag = cms.string('103X_dataRun2_Express_v2'),
     pfnPostfix = cms.untracked.string(''),
     pfnPrefix = cms.untracked.string(''),
     snapshotTime = cms.string(''),
@@ -80684,3 +80686,4 @@ process.endjob_step = cms.EndPath(cms.Task(process.MEtoEDMConverter))
 
 process.schedule = cms.Schedule(*[ process.raw2digi_step, process.L1Reco_step, process.reconstruction_step, process.endjob_step, process.AODoutput_step ], tasks=[process.patAlgosToolsTask])
 
+process.siStripDigis.UnpackCommonModeValues = True
