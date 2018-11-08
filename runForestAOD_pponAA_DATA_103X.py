@@ -37,7 +37,7 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
     duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
     fileNames = cms.untracked.vstring(
-        options.inputFiles[0]
+        options.inputFiles[0] 
         #"file:/afs/cern.ch/work/r/rbi/public/forest/step2_t0streamer_RAW2DIGI_L1Reco_RECO.root"
         ),
     )
@@ -83,7 +83,7 @@ process.centralityBin.centralityVariable = cms.string("HFtowers")
 ###############################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                  fileName=cms.string(options.outputFile)
+                                  fileName=cms.string(options.outputFile) 
                                   #fileName = cms.string("HiForestAOD.root")
                                   )
 
@@ -164,6 +164,13 @@ process.CSVscikitTags.weightFile = cms.FileInPath(
 ###############################################################################
 
 #########################
+# RecHits & pfTowers (HF, Castor & ZDC)
+#########################
+process.load('HeavyIonsAnalysis.JetAnalysis.rechitanalyzer_cfi')
+
+###############################################################################
+
+#########################
 # Main analysis list
 #########################
 
@@ -179,7 +186,8 @@ process.ana_step = cms.Path(
     process.hiFJRhoAnalyzer +
     process.pfcandAnalyzer +
     process.pfcandAnalyzerCS +
-    process.trackSequencesPP
+    process.trackSequencesPP +
+    process.rechitanalyzerpp
     )
 
 # # edm output for debugging purposes
