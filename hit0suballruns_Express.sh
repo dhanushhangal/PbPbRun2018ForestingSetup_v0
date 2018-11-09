@@ -14,7 +14,7 @@ done
 
 for i in `cat expressrunstoprocess` 
 do
-	python submitForestExpress.py -q 8nh -o /eos/cms/store/group/phys_heavyions/bdiab/PbPb2018/Forests/ExpressForests/v${1} -i ExpressPhysics.$i.${1}.list --proxy=proxyforprod
+	python submitForestExpress.py -q 8nh -o /store/group/phys_heavyions/bdiab/PbPb2018/Forests/ExpressForests/v${1} -i ExpressPhysics.$i.${1}.list --proxy=proxyforprod
 done
 
 #rm allruns
