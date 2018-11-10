@@ -8,7 +8,7 @@ import re
 #command line configuration
 usage = 'usage: %prog [options]'
 parser = optparse.OptionParser(usage)
-parser.add_option('-q', '--queue'      ,dest='queue'  ,help='batch queue'          ,default='1nd')#cmscaf1nd
+parser.add_option('-q', '--queue'      ,dest='queue'  ,help='batch queue'          ,default='cmscaf1nd')#cmscaf1nd
 parser.add_option('-j', '--jobs'       ,dest='jobs'   ,help='number of jobs'       ,default=1,    type=int)
 parser.add_option('-i', '--inputF'     ,dest='inputF',help='input file list'     ,default='express.list', type='string')
 parser.add_option('-n', '--nevts'      ,dest='nevts'  ,help='number of evetns/job' ,default=5,  type=int)
@@ -69,22 +69,22 @@ for line in f:
             scriptFile.write('cp %s/%s .\n' % (workBase,forestCfg))
             scriptFile.write('cp %s/%s .\n' % (workBase,recoCfg))
 #            scriptFile.write('cp $CMSSW_BASE/src/HeavyIonsAnalysis/JetAnalysis/test/*.db .\n')
-	    scriptFile.write('cmsRun %s outputFile=step3_%d.root maxEvents=-1 inputFiles=%s\n' % (recoCfg,jobCounter,line) )
+	    scriptFile.write('cmsRun %s outputFile=step3_%d.root maxEvents=1000 inputFiles=%s\n' % (recoCfg,jobCounter,line) )
             scriptFile.write('cd %s/src\n'%cmsswBase)
             #scriptFile.write('cd /afs/cern.ch/user/d/dhangal/CMSSW_10_3_0_patch1/src\n')
             scriptFile.write('eval `scram r -sh`\n')
             scriptFile.write('cd -\n')
-	    scriptFile.write('cmsRun %s outputFile=HiForest_%d.root maxEvents=-1 inputFiles=file:step3_%d.root\n' % (forestCfg,jobCounter,jobCounter) )
+	    scriptFile.write('cmsRun %s outputFile=HiForest_%d.root maxEvents=1000 inputFiles=file:step3_%d_numEvent1000.root\n' % (forestCfg,jobCounter,jobCounter) )
             scriptFile.write('eos mkdir %s\n' % outdir1)
             scriptFile.write('eos mkdir %s\n' % outdir2)
             scriptFile.write('eos mkdir %s\n' % outdir3)
             scriptFile.write('ls\n')
-            #use only if you want to save the AOD files
-            scriptFile.write('eos cp step3_%d.root root://eoscms//eos/cms%s/step3_%d.root\n' % (jobCounter,outdir6,jobCounter) )
+            #use only if you want to save the streamer AOD files
+            #scriptFile.write('eos cp step3_%d_numEvent1000.root root://eoscms//eos/cms%s/step3_%d_numEvent1000.root\n' % (jobCounter,outdir6,jobCounter) )
             ###########################################
-            scriptFile.write('eos cp HiForest_%d.root root://eoscms//eos/cms%s/HiForest_%d.root\n' % (jobCounter,outdir3,jobCounter) )
-            scriptFile.write('rm HiForest_%d*root\n' % (jobCounter))
-            scriptFile.write('rm step3_%d.root\n' % (jobCounter))
+            scriptFile.write('eos cp HiForest_%d_numEvent1000.root root://eoscms//eos/cms%s/HiForest_%d_numEvent1000.root\n' % (jobCounter,outdir3,jobCounter) )
+            scriptFile.write('rm HiForest_%d_numEvent1000.root\n' % (jobCounter))
+            scriptFile.write('rm step3_%d_numEvent1000.root\n' % (jobCounter))
             scriptFile.close()
 
             #preare to run it
