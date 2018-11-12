@@ -18452,7 +18452,7 @@ process.options = cms.untracked.PSet(
         'IntermediateHitDoublets_detachedTripletStepHitDoublets__RECO'
     ),
     numberOfStreams = cms.untracked.uint32(0),
-    numberOfThreads = cms.untracked.uint32(8)
+    numberOfThreads = cms.untracked.uint32(4)
 )
 
 process.pfBlockBasedIsolation = cms.PSet(
@@ -25073,6 +25073,7 @@ process.caloMetM = cms.EDProducer("MuonMET",
 
 process.caloStage1Digis = cms.EDProducer("L1TRawToDigi",
     FedIds = cms.vint32(1352),
+    InputLabel = cms.InputTag('rawDataRepacker'),
     Setup = cms.string('stage1::CaloSetup')
 )
 
@@ -25099,6 +25100,7 @@ process.caloStage1LegacyFormatDigis = cms.EDProducer("L1TCaloUpgradeToGCTConvert
 process.caloStage2Digis = cms.EDProducer("L1TRawToDigi",
     FWId = cms.uint32(0),
     FWOverride = cms.bool(False),
+    InputLabel = cms.InputTag('rawDataRepacker'),
     FedIds = cms.vint32(1360, 1366),
     MinFeds = cms.uint32(1),
     Setup = cms.string('stage2::CaloSetup'),
@@ -41794,6 +41796,7 @@ process.globalTrackingRegionWithVertices = cms.EDProducer("GlobalTrackingRegionW
 
 process.gmtStage2Digis = cms.EDProducer("L1TRawToDigi",
     FedIds = cms.vint32(1402),
+    InputLabel = cms.InputTag('rawDataRepacker'),
     MinFeds = cms.uint32(1),
     Setup = cms.string('stage2::GMTSetup')
 )
@@ -42057,6 +42060,7 @@ process.gtDigis = cms.EDProducer("L1GlobalTriggerRawToDigi",
 
 process.gtStage2Digis = cms.EDProducer("L1TRawToDigi",
     FedIds = cms.vint32(1404),
+    InputLabel = cms.InputTag('rawDataRepacker'),
     MinFeds = cms.uint32(1),
     Setup = cms.string('stage2::GTSetup')
 )
@@ -70015,8 +70019,8 @@ process.AODoutput = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string(options.outputFile),
     outputCommands = cms.untracked.vstring( (
         'drop *', 
-        'keep *_siStripClusters_*_*',
-        'keep *_siStripDigis_CommonMode_*',
+        #'keep *_siStripClusters_*_*',
+        #'keep *_siStripDigis_CommonMode_*',
         'keep ClusterSummary_clusterSummaryProducer_*_*', 
         'keep *_dt4DSegments_*_*', 
         'keep *_dt4DCosmicSegments_*_*', 
@@ -80686,4 +80690,4 @@ process.endjob_step = cms.EndPath(cms.Task(process.MEtoEDMConverter))
 
 process.schedule = cms.Schedule(*[ process.raw2digi_step, process.L1Reco_step, process.reconstruction_step, process.endjob_step, process.AODoutput_step ], tasks=[process.patAlgosToolsTask])
 
-process.siStripDigis.UnpackCommonModeValues = True
+#process.siStripDigis.UnpackCommonModeValues = True

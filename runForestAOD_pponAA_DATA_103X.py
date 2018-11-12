@@ -252,3 +252,5 @@ process.pAna = cms.EndPath(process.skimanalysis)
 ###############################################################################
 
 # Customization
+#only for streamer forests
+process.hltanalysis.l1results = 'gtStage2Digis'
