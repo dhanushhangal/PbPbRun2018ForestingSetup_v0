@@ -69,22 +69,22 @@ for line in f:
             scriptFile.write('cp %s/%s .\n' % (workBase,forestCfg))
             scriptFile.write('cp %s/%s .\n' % (workBase,recoCfg))
 #            scriptFile.write('cp $CMSSW_BASE/src/HeavyIonsAnalysis/JetAnalysis/test/*.db .\n')
-	    scriptFile.write('cmsRun %s outputFile=step3_%d.root maxEvents=1 inputFiles=%s\n' % (recoCfg,jobCounter,line) )
+	    scriptFile.write('cmsRun %s outputFile=step3_%d.root maxEvents=100 inputFiles=%s\n' % (recoCfg,jobCounter,line) )
             scriptFile.write('cd %s/src\n'%cmsswBase)
             #scriptFile.write('cd /afs/cern.ch/user/d/dhangal/CMSSW_10_3_0_patch1/src\n')
             scriptFile.write('eval `scram r -sh`\n')
             scriptFile.write('cd -\n')
-	    scriptFile.write('cmsRun %s outputFile=HiForest_%d.root maxEvents=1 inputFiles=file:step3_%d_numEvent1.root\n' % (forestCfg,jobCounter,jobCounter) )
+	    scriptFile.write('cmsRun %s outputFile=HiForest_%d.root maxEvents=100 inputFiles=file:step3_%d_numEvent100.root\n' % (forestCfg,jobCounter,jobCounter) )
             scriptFile.write('eos mkdir %s\n' % outdir1)
             scriptFile.write('eos mkdir %s\n' % outdir2)
             scriptFile.write('eos mkdir %s\n' % outdir3)
             scriptFile.write('ls\n')
             #use only if you want to save the streamer AOD files
-            scriptFile.write('eos cp step3_%d_numEvent1.root root://eoscms//eos/cms%s/step3_%d_numEvent1.root\n' % (jobCounter,outdir6,jobCounter) )
+            scriptFile.write('eos cp step3_%d_numEvent100.root root://eoscms//eos/cms%s/step3_%d_numEvent100.root\n' % (jobCounter,outdir6,jobCounter) )
             ###########################################
-            scriptFile.write('eos cp HiForest_%d_numEvent1.root root://eoscms//eos/cms%s/HiForest_%d_numEvent1.root\n' % (jobCounter,outdir3,jobCounter) )
-            scriptFile.write('rm HiForest_%d_numEvent1.root\n' % (jobCounter))
-            scriptFile.write('rm step3_%d_numEvent1.root\n' % (jobCounter))
+            scriptFile.write('eos cp HiForest_%d_numEvent100.root root://eoscms//eos/cms%s/HiForest_%d_numEvent100.root\n' % (jobCounter,outdir3,jobCounter) )
+            scriptFile.write('rm HiForest_%d_numEvent100.root\n' % (jobCounter))
+            scriptFile.write('rm step3_%d_numEvent100.root\n' % (jobCounter))
             scriptFile.close()
 
             #preare to run it
