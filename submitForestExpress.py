@@ -22,7 +22,7 @@ cmsswBase=os.environ['CMSSW_BASE']
 workBase=os.getcwd()
 jobsBase='%s/FARM%s'%(workBase,time.time())
 os.system('mkdir -p %s'%jobsBase)
-forestCfg = "runForestAOD_pponAA_DATA_103X.py"
+forestCfg = "runForestAOD_pponAA_DATA_103X_Express.py"
 
 #init a new proxy if none has been passed
 if opt.proxy is None:
