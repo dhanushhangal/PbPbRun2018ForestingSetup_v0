@@ -267,3 +267,4 @@ process.pAna = cms.EndPath(process.skimanalysis)
 ###############################################################################
 
 # Customization
+process.hltanalysis.l1results = 'gtStage2Digis'
