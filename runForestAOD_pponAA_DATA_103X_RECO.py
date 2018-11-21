@@ -190,7 +190,7 @@ process.rechitanalyzerpp.zdcRecHitSrc = cms.untracked.InputTag("QWzdcreco")
 process.ana_step = cms.Path(
     process.HiForest +
     process.hltanalysis +
-    process.hltobject +
+    #process.hltobject +
     process.centralityBin +
     process.hiEvtAnalyzer +
     process.jetSequence +
@@ -267,4 +267,3 @@ process.pAna = cms.EndPath(process.skimanalysis)
 ###############################################################################
 
 # Customization
-process.hltanalysis.l1results = 'gtStage2Digis'
