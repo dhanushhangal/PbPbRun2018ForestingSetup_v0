@@ -40,23 +40,25 @@ newfile='new_%s' % (opt.inputF)
 f = open(inputfile,'r')
 newf = open(newfile,'w')
 jobCounter=0
-m = re.compile(r"RAW/\d\d\d\d\d\d") #used to find run number
+#m = re.compile(r"000/\d\d\d\d\d\d") #used to find run number
 for line in f:
     if not line.find('root://eoscms//eos/cms') :
         if not line.startswith('#') :
             print line
             newf.write(line.replace('root://eoscms//eos/cms', '# root://eoscms//eos/cms'))
 
-            found = m.findall(line)
+            #found = m.findall(line)
             #outdir = '%s/%s' % (opt.output,found[0])
-            outdir1 = '%s/%s%s%s' % (opt.output,found[0][0],found[0][1],found[0][2])
-            outdir2 = '%s/%s%s%s' % (outdir1,found[0][4],found[0][5],found[0][6])
-            outdir3 = '%s/%s%s%s' % (outdir2,found[0][7],found[0][8],found[0][9])            
+            #outdir1 = '%s/%s%s%s' % (opt.output,found[0][0],found[0][1],found[0][2])
+            #outdir2 = '%s/%s%s%s' % (outdir1,found[0][4],found[0][5],found[0][6])
+            #outdir3 = '%s/%s%s%s' % (outdir2,found[0][7],found[0][8],found[0][9])            
            
-            outdir4 = '%s/%s%s%s' % (opt.AODoutput,found[0][0],found[0][1],found[0][2])
-            outdir5 = '%s/%s%s%s' % (outdir4,found[0][4],found[0][5],found[0][6])
-            outdir6 = '%s/%s%s%s' % (outdir5,found[0][7],found[0][8],found[0][9])            
-            
+            #outdir4 = '%s/%s%s%s' % (opt.AODoutput,found[0][0],found[0][1],found[0][2])
+            #outdir5 = '%s/%s%s%s' % (outdir4,found[0][4],found[0][5],found[0][6])
+            #outdir6 = '%s/%s%s%s' % (outdir5,found[0][7],found[0][8],found[0][9])            
+            outdir1 = '%s' % (opt.output)
+            outdir4 = '%s' % (opt.AODoutput)
+
             #create bash script to be submitted
             scriptFile = open('%s/runJob_%d.sh'%(jobsBase,jobCounter), 'w')
             scriptFile.write('#!/bin/bash\n')
@@ -69,22 +71,22 @@ for line in f:
             scriptFile.write('cp %s/%s .\n' % (workBase,forestCfg))
             scriptFile.write('cp %s/%s .\n' % (workBase,recoCfg))
 #            scriptFile.write('cp $CMSSW_BASE/src/HeavyIonsAnalysis/JetAnalysis/test/*.db .\n')
-	    scriptFile.write('cmsRun %s outputFile=step3_%d.root maxEvents=100 inputFiles=%s\n' % (recoCfg,jobCounter,line) )
+	    scriptFile.write('cmsRun %s outputFile=step3_%d.root maxEvents=1000 inputFiles=%s\n' % (recoCfg,jobCounter,line) )
             scriptFile.write('cd %s/src\n'%cmsswBase)
             #scriptFile.write('cd /afs/cern.ch/user/d/dhangal/CMSSW_10_3_0_patch1/src\n')
             scriptFile.write('eval `scram r -sh`\n')
             scriptFile.write('cd -\n')
-	    scriptFile.write('cmsRun %s outputFile=HiForest_%d.root maxEvents=100 inputFiles=file:step3_%d_numEvent100.root\n' % (forestCfg,jobCounter,jobCounter) )
-            scriptFile.write('eos mkdir %s\n' % outdir1)
-            scriptFile.write('eos mkdir %s\n' % outdir2)
-            scriptFile.write('eos mkdir %s\n' % outdir3)
+	    scriptFile.write('cmsRun %s outputFile=HiForest_%d.root maxEvents=1000 inputFiles=file:step3_%d_numEvent1000.root\n' % (forestCfg,jobCounter,jobCounter) )
+            #scriptFile.write('eos mkdir %s\n' % outdir1)
+            #scriptFile.write('eos mkdir %s\n' % outdir2)
+            #scriptFile.write('eos mkdir %s\n' % outdir3)
             scriptFile.write('ls\n')
             #use only if you want to save the streamer AOD files
-            scriptFile.write('eos cp step3_%d_numEvent100.root root://eoscms//eos/cms%s/step3_%d_numEvent100.root\n' % (jobCounter,outdir6,jobCounter) )
+            scriptFile.write('eos cp step3_%d_numEvent1000.root root://eoscms//eos/cms%s/step3_%d_numEvent1000.root\n' % (jobCounter,outdir4,jobCounter) )
             ###########################################
-            scriptFile.write('eos cp HiForest_%d_numEvent100.root root://eoscms//eos/cms%s/HiForest_%d_numEvent100.root\n' % (jobCounter,outdir3,jobCounter) )
-            scriptFile.write('rm HiForest_%d_numEvent100.root\n' % (jobCounter))
-            scriptFile.write('rm step3_%d_numEvent100.root\n' % (jobCounter))
+            scriptFile.write('eos cp HiForest_%d_numEvent1000.root root://eoscms//eos/cms%s/HiForest_%d_numEvent1000.root\n' % (jobCounter,outdir1,jobCounter) )
+            scriptFile.write('rm HiForest_%d_numEvent1000.root\n' % (jobCounter))
+            scriptFile.write('rm step3_%d_numEvent1000.root\n' % (jobCounter))
             scriptFile.close()
 
             #preare to run it
