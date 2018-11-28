@@ -37,8 +37,8 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
     duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
     fileNames = cms.untracked.vstring(
-        #"file:/afs/cern.ch/work/r/rbi/public/forest/step2_t0streamer_RAW2DIGI_L1Reco_RECO.root"
         options.inputFiles[0]
+        #"file:/afs/cern.ch/work/r/rbi/public/forest/step2_t0streamer_RAW2DIGI_L1Reco_RECO.root"
         ),
     )
 
@@ -61,12 +61,10 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '103X_dataRun2_Prompt_v2', '')
 process.HiForest.GlobalTagLabel = process.GlobalTag.globaltag
 
-#print('\n\033[31m~*~ USING CENTRALITY TABLE FOR Hydjet Drum5Ev8 ~*~\033[0m\n')
-print('\n\033[31m~*~ USING CENTRALITY TABLE FOR PbPb 2018 ~*~\033[0m\n')
+print('\n\033[31m~*~ USING CENTRALITY TABLE FOR PbPb 2018 DATA ~*~\033[0m\n')
 process.GlobalTag.snapshotTime = cms.string("9999-12-31 23:59:59.000")
 process.GlobalTag.toGet.extend([
     cms.PSet(record = cms.string("HeavyIonRcd"),
-#        tag = cms.string("CentralityTable_HFtowers200_HydjetDrum5Ev8_v1030pre5x02_mc"),
         tag = cms.string("CentralityTable_HFtowers200_DataPbPb_periHYDJETshape_run2v1031x02_offline"),
         connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS"),
         label = cms.untracked.string("HFtowers")
@@ -86,8 +84,7 @@ process.centralityBin.centralityVariable = cms.string("HFtowers")
 
 process.TFileService = cms.Service("TFileService",
                                   #fileName = cms.string("HiForestAOD.root")
-                                  fileName=cms.string(options.outputFile)
-                                  )
+                                  fileName=cms.string(options.outputFile))
 
 ###############################################################################
 # Additional Reconstruction and Analysis: Main Body
@@ -182,12 +179,17 @@ process.load('HeavyIonsAnalysis.JetAnalysis.rechitanalyzer_cfi')
 process.rechitanalyzerpp.zdcRecHitSrc = cms.untracked.InputTag("QWzdcreco")
 
 ###############################################################################
+#Recover peripheral primary vertices
+#https://twiki.cern.ch/twiki/bin/view/CMS/HITracking2018PbPb#Peripheral%20Vertex%20Recovery
+process.load("RecoVertex.PrimaryVertexProducer.OfflinePrimaryVerticesRecovery_cfi")
+
 
 #########################
 # Main analysis list
 #########################
 
 process.ana_step = cms.Path(
+    process.offlinePrimaryVerticesRecovery +
     process.HiForest +
     process.hltanalysis +
     process.hltobject +
@@ -263,6 +265,10 @@ process.HBHENoiseFilterResultRun2Tight = cms.Path(process.fHBHENoiseFilterResult
 process.HBHEIsoNoiseFilterResult = cms.Path(process.fHBHEIsoNoiseFilterResult)
 
 process.pAna = cms.EndPath(process.skimanalysis)
+
+from HLTrigger.Configuration.CustomConfigs import MassReplaceInputTag
+process = MassReplaceInputTag(process,"offlinePrimaryVertices","offlinePrimaryVerticesRecovery")
+process.offlinePrimaryVerticesRecovery.oldVertexLabel = "offlinePrimaryVertices"
 
 ###############################################################################
 
